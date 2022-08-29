@@ -48,6 +48,7 @@ namespace ECommerceAPI.Persistence.Repositories
 
         public async Task<bool> RemoveAsync(string id)
         {
+            //read repodaki gibi bir düzenleme yapılıp kontrol edilmeli
             T model = await Table.FirstOrDefaultAsync(data => data.Id == Guid.Parse(id));
             return Remove(model);
             
