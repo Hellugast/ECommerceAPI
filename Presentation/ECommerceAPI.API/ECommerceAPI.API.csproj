@@ -16,11 +16,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\ECommerceAPI.Application\ECommerceAPI.Application.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\ECommerceAPI.Infrastructure\ECommerceAPI.Infrastructure.csproj" />
     <ProjectReference Include="..\..\Infrastructure\ECommerceAPI.Persistence\ECommerceAPI.Persistence.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="wwwroot\" />
+    <Folder Include="wwwroot\resource\product-images\" />
   </ItemGroup>
 
 </Project>
