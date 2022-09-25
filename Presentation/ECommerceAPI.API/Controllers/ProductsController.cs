@@ -6,6 +6,7 @@ using ECommerceAPI.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Net;
 
 namespace ECommerceAPI.API.Controllers
@@ -24,9 +25,10 @@ namespace ECommerceAPI.API.Controllers
         private readonly IInvoiceFileReadRepository _invoiceFileReadRepository;
         private readonly IInvoiceFileWriteRepository _invoiceFileWriteRepository;
         private readonly IStorageService _storageService;
+        private readonly IConfiguration _configuration;
 
 
-        public ProductsController(IProductWriteRepository productWriteRepository, IProductReadRepository productReadRepository, IWebHostEnvironment webHostEnvironment, IInvoiceFileWriteRepository invoiceFileWriteRepository, IInvoiceFileReadRepository invoiceFileReadRepository, IProductImageFileWriteRepository productImageFileWriteRepository, IProductImageFileReadRepository productImageFileReadRepository, IFileReadRepository fileReadRepository, IFileWriteRepository fileWriteRepository, IStorageService storageService)
+        public ProductsController(IProductWriteRepository productWriteRepository, IProductReadRepository productReadRepository, IWebHostEnvironment webHostEnvironment, IInvoiceFileWriteRepository invoiceFileWriteRepository, IInvoiceFileReadRepository invoiceFileReadRepository, IProductImageFileWriteRepository productImageFileWriteRepository, IProductImageFileReadRepository productImageFileReadRepository, IFileReadRepository fileReadRepository, IFileWriteRepository fileWriteRepository, IStorageService storageService, IConfiguration configuration)
         {
             _productWriteRepository = productWriteRepository;
             _productReadRepository = productReadRepository;
@@ -38,6 +40,7 @@ namespace ECommerceAPI.API.Controllers
             _fileReadRepository = fileReadRepository;
             _fileWriteRepository = fileWriteRepository;
             _storageService = storageService;
+            _configuration = configuration;
         }
 
         [HttpGet]
@@ -136,5 +139,30 @@ namespace ECommerceAPI.API.Controllers
             return Ok();
         }
 
+        [HttpGet("[action]/{id}")]
+        public async Task<IActionResult> GetProductImages(string id)
+        {
+            Product? product = await _productReadRepository.Table.Include(p => p.ProductImageFiles)
+                .FirstOrDefaultAsync(p => p.Id == Guid.Parse(id));
+
+
+            return Ok(product.ProductImageFiles.Select(p => new
+            {
+                Path = $"{_configuration["BaseStorageUrl"]}/{p.Path}",
+                p.FileName,
+                p.Id
+            }));
+        }
+        [HttpDelete("[action]/{Id}")]
+        public async Task<IActionResult> DeleteProductImage(string Id, string imageId)
+        {
+            Product? product = await _productReadRepository.Table.Include(p => p.ProductImageFiles)
+                .FirstOrDefaultAsync(p => p.Id == Guid.Parse(Id));
+            ProductImageFile productImageFile = product.ProductImageFiles.FirstOrDefault(p => p.Id == Guid.Parse(imageId));
+            product.ProductImageFiles.Remove(productImageFile);
+            await _productWriteRepository.SaveAsync();
+            return Ok();
+
+        }
     }
 }
