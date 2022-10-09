@@ -1,45 +1,34 @@
-﻿using ECommerceAPI.Application.Exceptions;
-using ECommerceAPI.Domain.Entities.Identity;
+﻿using ECommerceAPI.Application.Abstractions.Services;
+using ECommerceAPI.Application.DTOs.User;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Serialization;
 
 namespace ECommerceAPI.Application.Features.Commands.AppUsers.CreateUser
 {
     public class CreateUserCommandHandler : IRequestHandler<CreateUserCommandRequest, CreateUserCommandResponse>
     {
 
-        private readonly UserManager<AppUser> _userManager;
+        private readonly IUserService _userService;
 
-        public CreateUserCommandHandler(UserManager<AppUser> userManager)
+        public CreateUserCommandHandler(IUserService userService)
         {
-            _userManager = userManager;
+            _userService = userService;
         }
 
         public async Task<CreateUserCommandResponse> Handle(CreateUserCommandRequest request, CancellationToken cancellationToken)
         {
-            IdentityResult result = await _userManager.CreateAsync(new()
+            CreateUserResponse response = await _userService.CreateAsync(new()
             {
-                Id = Guid.NewGuid().ToString(),
-                UserName = request.UserName,
                 Email = request.Email,
+                UserName = request.UserName,
+                Password = request.Password,
+                ConfirmPassword = request.ConfirmPassword
+            });
 
-            }, request.Password) ;
-
-            CreateUserCommandResponse createUserCommandResponse = new() { Succeeded = result.Succeeded };
-
-            if (result.Succeeded)
-                createUserCommandResponse.Message = "Kullanıcı oluşturuldu";
-            else
-                foreach (var error in result.Errors)
-                    createUserCommandResponse.Message += $"{error.Code} - {error.Description}\n";
-
-            return createUserCommandResponse;
+            return new()
+            {
+                Message = response.Message,
+                Succeeded = response.Succeeded,
+            };
         }
     }
 }

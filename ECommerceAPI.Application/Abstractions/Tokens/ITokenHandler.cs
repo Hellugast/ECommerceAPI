@@ -9,6 +9,6 @@ namespace ECommerceAPI.Application.Abstractions.Tokens
 {
     public interface ITokenHandler
     {
-        Token CreateAccessToken(int minute);
+        Token CreateAccessToken(int second);
     }
 }
