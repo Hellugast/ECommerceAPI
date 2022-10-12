@@ -5,11 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ECommerceAPI.Application.Abstractions.Tokens
+namespace ECommerceAPI.Application.Features.Commands.AppUsers.RefreshTokenLogin
 {
-    public interface ITokenHandler
+    public class RefreshTokenLoginCommandResponse
     {
-        Token CreateAccessToken(int second);
-        string CreateRefreshToken();
+        public Token Token { get; set; }
     }
 }
