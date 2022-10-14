@@ -7,16 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\ECommerceAPI.Application\ECommerceAPI.Application.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="Services\Storage\Azure\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Azure.Storage.Blobs" Version="12.13.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.9" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\ECommerceAPI.Application\ECommerceAPI.Application.csproj" />
   </ItemGroup>
 
 </Project>
