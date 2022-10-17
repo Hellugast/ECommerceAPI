@@ -1,6 +1,7 @@
 ﻿using ECommerceAPI.Application.Repositories;
 using ECommerceAPI.Application.RequestParameters;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +25,7 @@ namespace ECommerceAPI.Application.Features.Queries.Product.GetAllProduct
             var products = _productReadRepository.GetAll(false)
             .Skip(request.Page * request.Size)
             .Take(request.Size)
+            .Include(p => p.ProductImageFiles)
             .Select(p => new
             {
                 p.Id,
@@ -31,7 +33,8 @@ namespace ECommerceAPI.Application.Features.Queries.Product.GetAllProduct
                 p.Stock,
                 p.Price,
                 p.CreatedDate,
-                p.UpdatedDate
+                p.UpdatedDate,
+                p.ProductImageFiles
             }).ToList();
 
             return new()
