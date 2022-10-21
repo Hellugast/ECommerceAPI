@@ -26,7 +26,7 @@ namespace ECommerceAPI.Persistence
             //bu kısım static bir configuration sınıfı içine alınabilir - birden fazla kullanıma gerek duyulacaksa
             ConfigurationManager configurationManager = new();
             configurationManager.SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), "../../Presentation/ECommerceAPI.API"));
-            configurationManager.AddJsonFile("appsettings.json"); 
+            configurationManager.AddJsonFile("appsettings.json");
 
             services.AddDbContext<ECommerceAPIDbContext>(options => options.UseNpgsql(configurationManager.GetConnectionString("PostgreSQL")));
 
@@ -51,6 +51,11 @@ namespace ECommerceAPI.Persistence
             services.AddScoped<IProductImageFileWriteRepository, ProductImageFileWriteRepository>();
             services.AddScoped<IInvoiceFileReadRepository, InvoiceFileReadRepository>();
             services.AddScoped<IInvoiceFileWriteRepository, InvoiceFileWriteRepository>();
+
+            services.AddScoped<IBasketItemReadRepository, BasketItemReadRepository>();
+            services.AddScoped<IBasketItemWriteRepository, BasketItemWriteRepository>();
+            services.AddScoped<IBasketWriteRepository, BasketWriteRepository>();
+            services.AddScoped<IBasketReadRepository, BasketReadRepository>();
 
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IAuthService, AuthService>();
