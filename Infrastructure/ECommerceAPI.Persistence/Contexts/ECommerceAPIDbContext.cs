@@ -27,6 +27,7 @@ namespace ECommerceAPI.Persistence.Contexts
         public DbSet<Basket> Baskets { get; set; }
         public DbSet<BasketItem> BasketItems { get; set; }
 
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Order>()
@@ -37,9 +38,10 @@ namespace ECommerceAPI.Persistence.Contexts
                 .WithOne(o => o.Basket)
                 .HasForeignKey<Order>(b => b.Id);
 
-            base.OnModelCreating(builder);
 
+            base.OnModelCreating(builder);
         }
+
 
         public async override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
