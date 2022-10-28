@@ -25,7 +25,7 @@ namespace ECommerceAPI.Application.Features.Commands.Order.CreateOrder
 
         public async Task<CreateOrderCommandResponse> Handle(CreateOrderCommandRequest request, CancellationToken cancellationToken)
         {
-            await _orderService.CreateOrder(new()
+            await _orderService.CreateOrderAsync(new()
             {
                 Address = request.Adress,
                 Description = request.Description,
