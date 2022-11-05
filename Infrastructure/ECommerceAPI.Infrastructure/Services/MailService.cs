@@ -20,12 +20,12 @@ namespace ECommerceAPI.Infrastructure.Services
             _configuration = configuration;
         }
 
-        public async Task SendMessageAsync(string to, string subject, string body, bool isBodyHtml = true)
+        public async Task SendMailAsync(string to, string subject, string body, bool isBodyHtml = true)
         {
-            await SendMessageAsync(new[] { to }, subject, body, isBodyHtml);
+            await SendMailAsync(new[] { to }, subject, body, isBodyHtml);
         }
 
-        public async Task SendMessageAsync(string[] tos, string subject, string body, bool isBodyHtml = true)
+        public async Task SendMailAsync(string[] tos, string subject, string body, bool isBodyHtml = true)
         {
             MailMessage mail = new();
             mail.IsBodyHtml = isBodyHtml;
@@ -44,6 +44,30 @@ namespace ECommerceAPI.Infrastructure.Services
             smtp.Host = _configuration["Mail:Host"];
 
             await smtp.SendMailAsync(mail);
+
+        }
+
+        public async Task SendPasswordResetMailAsync(string to, string userId, string resetToken)
+        {
+
+            StringBuilder mail = new();
+            mail.AppendLine("Merhaba<br>Yeni şifre talebinde bulunduysanız linke tıklayın.<br><strong><a target=\"_blank\" href=\"");
+            ////@ kullanılarak kaçış karakterini kullanmamak mümkün
+            //mail.AppendLine(_configuration["AngularClientUrl"]);
+            //mail.AppendLine("/update-password/");
+            //mail.AppendLine(userId);
+            //mail.AppendLine("/");
+            //mail.AppendLine(resetToken);
+            ////mail.Replace(" ", "");
+
+            string str = _configuration["AngularClientUrl"] + "/update-password/" + userId + "/" + resetToken;
+            mail.AppendLine(str);
+
+
+            mail.AppendLine("\">Şifre sıfırlamak için tıkla</a></strong><br><br><span style=\"font-size:12px;\">" +
+                "Not : Eğer böyle bir talepte bulunmadıysanız destek ekibi ile iletişime geçebilirsiniz</span><br><br>Bab ECommerce");
+
+            await SendMailAsync(to, "Şifre yenileme talebi", mail.ToString());
 
         }
     }

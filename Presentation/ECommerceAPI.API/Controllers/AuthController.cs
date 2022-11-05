@@ -1,6 +1,8 @@
 ﻿using ECommerceAPI.Application.Features.Commands.AppUsers.GoogleLogin;
 using ECommerceAPI.Application.Features.Commands.AppUsers.LoginUser;
+using ECommerceAPI.Application.Features.Commands.AppUsers.PasswordReset;
 using ECommerceAPI.Application.Features.Commands.AppUsers.RefreshTokenLogin;
+using ECommerceAPI.Application.Features.Commands.AppUsers.VerifyResetToken;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -28,7 +30,7 @@ namespace ECommerceAPI.API.Controllers
         }
 
         [HttpPost("[action]")]
-        public async Task<IActionResult> RefreshTokenLogin([FromBody]RefreshTokenLoginCommandRequest refreshTokenLoginCommandRequest)
+        public async Task<IActionResult> RefreshTokenLogin([FromBody] RefreshTokenLoginCommandRequest refreshTokenLoginCommandRequest)
         {
             RefreshTokenLoginCommandResponse response = await _mediator.Send(refreshTokenLoginCommandRequest);
             return Ok(response);
@@ -40,5 +42,20 @@ namespace ECommerceAPI.API.Controllers
             GoogleLoginCommandResponse response = await _mediator.Send(googleLoginCommandRequest);
             return Ok(response);
         }
+
+        [HttpPost("password-reset")]
+        public async Task<IActionResult> PasswordReset(PasswordResetCommandRequest passwordResetCommandRequest)
+        {
+            PasswordResetCommandResponse response = await _mediator.Send(passwordResetCommandRequest);
+            return Ok(response);
+        }
+
+        [HttpPost("verify-reset-token")]
+        public async Task<IActionResult> VerifyResetToken([FromBody] VerifyResetTokenCommandRequest verifyResetTokenCommandRequest)
+        {
+            VerifyResetTokenCommandResponse response = await _mediator.Send(verifyResetTokenCommandRequest);
+            return Ok(response);
+        }
+
     }
 }
