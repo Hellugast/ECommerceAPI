@@ -20,6 +20,15 @@ namespace ECommerceAPI.Infrastructure.Services
             _configuration = configuration;
         }
 
+        public async Task SendCompletedOrderMailAsync(string to, string orderCode, DateTime orderDate, string username)
+        {
+            string mail = $"Merhaba {username}<br>" +
+                $"{orderDate} tarihinde vermiş olduğunuz sipariş başarıyla alınmıştır";
+
+            await SendMailAsync(to, $"{orderCode} numaralı sipariş tamamlandı", mail);
+
+        }
+
         public async Task SendMailAsync(string to, string subject, string body, bool isBodyHtml = true)
         {
             await SendMailAsync(new[] { to }, subject, body, isBodyHtml);
