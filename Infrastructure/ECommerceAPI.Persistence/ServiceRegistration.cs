@@ -68,6 +68,8 @@ namespace ECommerceAPI.Persistence
             services.AddScoped<ICompletedOrderReadRepository, CompletedOrderReadRepository>();
             services.AddScoped<ICompletedOrderWriteRepository, CompletedOrderWriteRepository>();
 
+            services.AddScoped<IRoleService, RoleService>();
+
         }
     }
 }
