@@ -44,7 +44,16 @@ namespace ECommerceAPI.Persistence.Services
                     Name = menu,
                 };
 
-                await _menuWriteRepository.AddAsync(_menu);
+                try
+                {
+                    await _menuWriteRepository.AddAsync(_menu);
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+
 
                 await _menuWriteRepository.SaveAsync();
             }
@@ -57,8 +66,8 @@ namespace ECommerceAPI.Persistence.Services
             if (endpoint == null)
             {
                 var action = _applicationService.GetAuthorizeDefinitionEndpoints(type)
-                       .FirstOrDefault(m => m.Name == menu)?
-                       .Actions.FirstOrDefault(e => e.Code == code);
+                       .FirstOrDefault(m => m.Name == menu)
+                       ?.Actions.FirstOrDefault(e => e.Code == code);
 
                 endpoint = new()
                 {
@@ -71,7 +80,16 @@ namespace ECommerceAPI.Persistence.Services
                 };
 
                 await _endpointWriteRepository.AddAsync(endpoint);
-                await _endpointWriteRepository.SaveAsync();
+                try
+                {
+                    await _endpointWriteRepository.SaveAsync();
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+
             }
 
             foreach (var role in endpoint.Roles)

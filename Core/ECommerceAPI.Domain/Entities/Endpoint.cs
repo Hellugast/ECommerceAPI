@@ -14,7 +14,6 @@ namespace ECommerceAPI.Domain.Entities
         {
             Roles = new HashSet<AppRole>();
         }
-        public string Name { get; set; }
         public string ActionType { get; set; }
         public string HttpType { get; set; }
         public string Definition { get; set; }
