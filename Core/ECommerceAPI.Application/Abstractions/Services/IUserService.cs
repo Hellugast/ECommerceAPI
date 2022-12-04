@@ -11,6 +11,7 @@ namespace ECommerceAPI.Application.Abstractions.Services
         Task<List<ListUser>> GetAllUsersAsync(int page, int size);
         int TotalUsersCount { get; }
         Task AssignRoleToUserAsync(string userId, string[] roles);
-        Task<string[]> GetUserRoles(string userId);
+        Task<string[]> GetUserRolesAsync(string userIdOrName);
+        Task<bool> HasRolePermissionToEndpointAsync(string name, string code);
     }
 }

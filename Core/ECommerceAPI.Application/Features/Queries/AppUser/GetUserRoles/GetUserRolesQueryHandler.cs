@@ -20,10 +20,10 @@ namespace ECommerceAPI.Application.Features.Queries.AppUser.GetUserRoles
 
         public async Task<GetUserRolesQueryResponse> Handle(GetUserRolesQueryRequest request, CancellationToken cancellationToken)
         {
-            var userRoles = await _userService.GetUserRoles(request.UserId);
+            var userRoles = await _userService.GetUserRolesAsync(request.UserId);
             return new()
             {
-                UserRoles= userRoles,
+                UserRoles = userRoles,
             };
         }
     }
