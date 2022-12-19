@@ -76,6 +76,8 @@ namespace ECommerceAPI.Persistence
             services.AddScoped<IMenuReadRepository, MenuReadRepository>();
             services.AddScoped<IMenuWriteRepository, MenuWriteRepository>();
 
+            services.AddScoped<IProductService, ProductService>();
+
         }
     }
 }
